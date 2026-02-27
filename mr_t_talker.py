@@ -15,6 +15,7 @@ import os
 import random
 import shutil
 import subprocess
+import sys
 import tempfile
 import threading
 import time
@@ -53,6 +54,19 @@ WINDOW_MARGIN = 20
 MOUTH_FLIP_MS = 120
 START_POSE_HOLD_MS = 500
 END_POSE_HOLD_MS = 240
+
+def configure_tcl_tk_for_bundle() -> None:
+    """Point Tcl/Tk to bundled resources when running as a py2app app."""
+    if not getattr(sys, "frozen", False):
+        return
+
+    tcl_dir = APP_DIR / f"tcl{tk.TclVersion:.1f}"
+    tk_dir = APP_DIR / f"tk{tk.TkVersion:.1f}"
+    if tcl_dir.exists():
+        os.environ["TCL_LIBRARY"] = str(tcl_dir)
+    if tk_dir.exists():
+        os.environ["TK_LIBRARY"] = str(tk_dir)
+
 
 MODES = {
     "Every minute": "minute",
@@ -300,6 +314,7 @@ def main() -> None:
             missing.append(OPEN_IMAGE.name)
         raise SystemExit(f"Missing image file(s): {', '.join(missing)}")
 
+    configure_tcl_tk_for_bundle()
     root = tk.Tk()
     if APP_ICON.exists():
         try:

@@ -16,3 +16,5 @@ dist/
 # py2app temp/intermediates
 *.tiff
 *.iconset/
+.eggs/
+.venv*/
