@@ -25,7 +25,7 @@ APP_DIR = Path(__file__).resolve().parent
 CLOSED_IMAGE = APP_DIR / "MRT_mouth_closed.png"
 OPEN_IMAGE = APP_DIR / "MRT_mouth_open.png"
 END_IMAGE = APP_DIR / "MRT_mouth_end_1.png"
-APP_ICON = APP_DIR / "MRT_mouth_end_1.png"
+APP_ICON = APP_DIR / "ICON.png"
 EXTRA_FRAME_GLOBS = [
     "MRT_mouth_A_face.png",
     "MRT_mouth_o_face.png",
@@ -51,7 +51,7 @@ SAY_SPEECH_RATE = "150"
 IMAGE_SIZE = 200
 WINDOW_MARGIN = 20
 MOUTH_FLIP_MS = 120
-END_POSE_PROBABILITY = 0.16
+START_POSE_HOLD_MS = 500
 END_POSE_HOLD_MS = 240
 
 MODES = {
@@ -148,6 +148,7 @@ class MrTTalker:
         self._build_avatar_window()
         self._reset_schedule()
         self._scheduler_tick()
+        self.root.after(350, self.speak_now)
 
     def _load_scaled_image(self, path: Path) -> tk.PhotoImage:
         raw = tk.PhotoImage(file=str(path))
@@ -247,7 +248,8 @@ class MrTTalker:
         self.is_speaking = True
         self.frame_index = 0
         self._show_avatar()
-        self._animate_mouth()
+        self.face_label.config(image=self.closed_img)
+        self.animation_job = self.root.after(START_POSE_HOLD_MS, self._animate_mouth)
 
     def _animate_mouth(self) -> None:
         if not self.is_speaking:
@@ -264,7 +266,7 @@ class MrTTalker:
         if self.animation_job:
             self.root.after_cancel(self.animation_job)
             self.animation_job = None
-        if self.end_img and random.random() < END_POSE_PROBABILITY:
+        if self.end_img:
             self.face_label.config(image=self.end_img)
             self.root.after(END_POSE_HOLD_MS, self._hide_avatar)
             return
