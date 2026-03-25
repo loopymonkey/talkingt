@@ -23,10 +23,11 @@ import tkinter as tk
 from pathlib import Path
 
 APP_DIR = Path(__file__).resolve().parent
-CLOSED_IMAGE = APP_DIR / "MRT_mouth_closed.png"
-OPEN_IMAGE = APP_DIR / "MRT_mouth_open.png"
-END_IMAGE = APP_DIR / "MRT_mouth_end_1.png"
-APP_ICON = APP_DIR / "ICON.png"
+IMAGES_DIR = APP_DIR / "images"
+CLOSED_IMAGE = IMAGES_DIR / "MRT_mouth_closed.png"
+OPEN_IMAGE = IMAGES_DIR / "MRT_mouth_open.png"
+END_IMAGE = IMAGES_DIR / "MRT_mouth_end_1.png"
+APP_ICON = IMAGES_DIR / "icon.png"
 EXTRA_FRAME_GLOBS = [
     "MRT_mouth_A_face.png",
     "MRT_mouth_o_face.png",
@@ -173,7 +174,7 @@ class MrTTalker:
     def _load_talk_frames(self) -> list[tk.PhotoImage]:
         frames: list[tk.PhotoImage] = [self.open_img]
         for filename in EXTRA_FRAME_GLOBS:
-            frame_path = APP_DIR / filename
+            frame_path = IMAGES_DIR / filename
             if frame_path.exists():
                 frames.append(self._load_scaled_image(frame_path))
         return frames

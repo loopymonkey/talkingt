@@ -23,21 +23,27 @@ def detect_tcl_tk_resources() -> list[str]:
 
 APP = ["mr_t_talker.py"]
 DATA_FILES = [
-    "ICON.png",
-    "MRT_mouth_closed.png",
-    "MRT_mouth_open.png",
-    "MRT_mouth_A_face.png",
-    "MRT_mouth_o_face.png",
-    "MRT_mouth_end_1.png",
+    (
+        "images",
+        [
+            "images/icon.png",
+            "images/MRT_mouth_closed.png",
+            "images/MRT_mouth_open.png",
+            "images/MRT_mouth_A_face.png",
+            "images/MRT_mouth_o_face.png",
+            "images/MRT_mouth_end_1.png",
+            "images/TalkingT.icns",
+        ],
+    ),
 ]
 OPTIONS = {
     "argv_emulation": False,
-    "iconfile": "TalkingT.icns",
+    "iconfile": "images/TalkingT.icns",
     "resources": detect_tcl_tk_resources(),
     "plist": {
         "CFBundleName": "Talking T",
         "CFBundleDisplayName": "Talking T",
-        "CFBundleIdentifier": "com.loopymonkey.talkingt",
+        "CFBundleIdentifier": "com.jeffcoat.talkingt",
         "CFBundleShortVersionString": "0.1.0",
         "CFBundleVersion": "1",
         "LSMinimumSystemVersion": "12.0",
